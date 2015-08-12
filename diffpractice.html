@@ -1,0 +1,36 @@
+<html>
+<script src="./node_modules/diff/dist/diff.js"></script>
+<style>
+del {background:pink;}
+ins {background:lightgreen;}
+</style>
+<input id="l1" or onInput="diff()" value="aaaaabccccc"/>
+<input id="l2" or onInput="diff()" value="aaaaadccccc"/>
+<div id="output2"></div>
+<div id="output"></div>
+<div id="output3"></div>
+<script>
+	var diff=function(){
+		var o=JsDiff.diffChars(l1.value,l2.value);
+		var out=o.map(function(item){
+			if(item.removed){
+				return "<del>"+item.value+"</del>";
+			}else if (item.added){
+				return "<ins>"+item.value+"</ins>";
+			}
+			return item.value;
+		}).join("");
+		output.innerHTML=out;
+		var totallength=l1.value.length+l2.value.length;
+		var nomatchlength=0;
+		var out2=o.map(function(item){
+			if(item.removed||item.added) nomatchlength+=item.value.length;
+			return nomatchlength;
+		});
+		output2.innerHTML=(totallength-nomatchlength)*100/totallength+"%";
+		output3.innerHTML=nomatchlength;
+	}
+	diff();
+</script>
+
+<!--aaaaa<del>b</del><ins>d</ins>ccccc(totallength-out2[out2.length-1])*100/totallength+"%";-->
